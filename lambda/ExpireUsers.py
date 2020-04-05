@@ -20,6 +20,7 @@ try:
     FROM_ADDRESS = os.environ['FROM_ADDRESS']
     EXPLANATION_FOOTER = os.environ['EXPLANATION_FOOTER']
     EXPLANATION_HEADER = os.environ['EXPLANATION_HEADER']
+    SES_REGION_NAME = os.environ['SES_REGION_NAME']
 except KeyError as e:
     print("Key Error: " + e.message)
     sys.exit(1)
@@ -127,7 +128,8 @@ def email_user(email, message, account_name):
     global ACTION_SUMMARY # This is what we send to the admins
     if SEND_EMAIL != "true": return # Abort if we're not supposed to send email
     if message == "": return # Don't send an empty message
-    client = boto3.client('ses')
+    client = boto3.client('ses', SES_REGION_NAME) if not SES_REGION_NAME else boto3.client('ses')
+
     body = EXPLANATION_HEADER + "\n" + message + "\n\n" + EXPLANATION_FOOTER
     try: 
         response = client.send_email(

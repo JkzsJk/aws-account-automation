@@ -69,6 +69,11 @@ Parameters:
     Type: String
     Default: "If you have any questions or need assistance please reply to this email."
 
+  pSesRegionName:
+    Description: Region name of SES
+    Type: String
+    Default: ap-southeast-2
+
 Resources:
 
   # Users who are locked out will be added to this group.
@@ -223,7 +228,8 @@ Resources:
           SEND_EMAIL: !Ref pSendEmail
           FROM_ADDRESS: !Ref pFromAddress
           EXPLANATION_FOOTER: !Ref pEmailFooter
-          EXPLANATION_HEADER: !Ref pEmailHeader       
+          EXPLANATION_HEADER: !Ref pEmailHeader    
+          SES_REGION_NAME: !Ref pSesRegionName   
 
   ExpireUsersLambdaAlias:
     Type: AWS::Lambda::Alias
